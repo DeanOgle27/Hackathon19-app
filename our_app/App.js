@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import { StyleSheet, Text, View } from 'react-native';
+import { AppLoading } from 'expo';
 import Header from './components/Header.js';
-
-
-// Imports constants
+import * as Font from 'expo-font';
+import * as FileSystem from 'expo-file-system';
 import Colors from './constants/Colors.js';
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'blackjack': require('./assets/fonts/blackjack.otf')
+  });
+};
 
 
 // Imports all screens
@@ -48,10 +52,23 @@ handleUploadPhoto = (photo) => {
 // ######################################END UPLOADING TO SERVER STUFF#####################################
 
 
+
+
+
+
 export default function App() {
 
   // Keeps track of current screen
   const [currScreen, setCurrScreen] = useState('home');
+  const [dataLoaded, setDataLoaded] = useState(false);
+  if (!dataLoaded) {
+    return (
+      <AppLoading
+        startAsync ={fetchFonts}
+        onFinish={() => setDataLoaded(true)}
+        />
+    );
+  }
   const [clothingImage, setClothingImage] = useState();
   const [images] = useState([]);
 
@@ -100,6 +117,7 @@ export default function App() {
   // Returns App Component
   return (
     <View style={styles.screen}>
+      <Header/>
       {content}
     </View>
   );
