@@ -2,16 +2,15 @@ import React from 'react';
 import Header from '../components/Header.js';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 
+import Header from '../components/Header.js';
 import ImgPicker from '../components/ImagePicker.js';
 
 const WelcomeScreen = props => {
     return (
         
         <View style={styles.container}>
-            <Text>Something</Text>
-            <Button title = "Suggest fit"></Button>
-            <Button title = "Wardrobe"></Button>
-            <Button title = "Profile"></Button>
+            <Header />
+            <ImgPicker onImageTaken={props.onImageTaken} />
         </View>
         
     );
