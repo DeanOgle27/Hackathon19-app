@@ -21,14 +21,10 @@ const createFormData = (photo) => {
 
   data.append("photo", {
     name: 'file',
-    type: 'image',
+    type: photo.uri.split('.').pop(),
     uri:
-      Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+      photo.uri
   });
-
-  // Object.keys(body).forEach(key => {
-  //   data.append(key, body[key]);
-  // });
 
   return data;
 };
@@ -57,6 +53,8 @@ export default function App() {
   // Keeps track of current screen
   const [currScreen, setCurrScreen] = useState('home');
   const [clothingImage, setClothingImage] = useState();
+  const [images] = useState([]);
+
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
@@ -66,12 +64,14 @@ export default function App() {
     const imageName = imagePath.split('/').pop();
     const newImagePath = FileSystem.documentDirectory + imageName;
 
+    // Tries to move the image into the file system
     try {
       await FileSystem.moveAsync({
         from: clothingImage,
         to: newImagePath
       });
     } catch (err) {
+      // If there's a problem, it opens an alert
       Alert.alert(
         'Error Saving Image',
         'Big Oof',
@@ -94,7 +94,6 @@ export default function App() {
       <WelcomeScreen onImageTaken={imageTakenHandler} />
     );
     headerContent = <Header />;
-    //footerContent = <EmptyFooter />;
   }
 
 
