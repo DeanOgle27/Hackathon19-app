@@ -8,7 +8,9 @@ import Colors from './constants/Colors.js';
 
 const fetchFonts = () => {
   return Font.loadAsync({
-    'blackjack': require('./assets/fonts/blackjack.otf')
+    'blackjack': require('./assets/fonts/blackjack.otf'),
+    'fira-sans-bold': require('./assets/fonts/FiraSans-Bold.otf'),
+    'fira-sans-bold': require('./assets/fonts/FiraSans-BoldItalic.otf'),
   });
 };
 
@@ -114,7 +116,6 @@ export default function App() {
     );
     headerContent = <Header />;
   }
-
 
   // Returns App Component
   return (

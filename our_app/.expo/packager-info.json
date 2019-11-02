@@ -1,1 +1,9 @@
-{}
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://33-226.anonymous.our-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.33-226.anonymous.our-app.exp.direct",
+  "ngrokPid": 8062,
+  "devToolsPort": 19002,
+  "packagerPort": 19003,
+  "packagerPid": 8052
+}
