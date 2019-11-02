@@ -5,6 +5,7 @@ import Header from './components/Header.js';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
 import Colors from './constants/Colors.js';
+
 const fetchFonts = () => {
   return Font.loadAsync({
     'blackjack': require('./assets/fonts/blackjack.otf')
@@ -13,7 +14,7 @@ const fetchFonts = () => {
 
 
 // Imports all screens
-import WelcomeScreen from './screens/WelcomeScreen.js';
+import AddClothingScreen from './screens/AddClothingScreen.js';
 
 // Declares content variable
 let content;
@@ -61,16 +62,17 @@ export default function App() {
   // Keeps track of current screen
   const [currScreen, setCurrScreen] = useState('home');
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [clothingImage, setClothingImage] = useState();
+  const [images, setImages] = useState([]);
+
   if (!dataLoaded) {
     return (
       <AppLoading
-        startAsync ={fetchFonts}
+        startAsync={fetchFonts}
         onFinish={() => setDataLoaded(true)}
-        />
+      />
     );
   }
-  const [clothingImage, setClothingImage] = useState();
-  const [images] = useState([]);
 
 
   // Image Handler Function
@@ -108,7 +110,7 @@ export default function App() {
   // This logic sets the current screen
   if (currScreen == 'home') {
     content = (
-      <WelcomeScreen onImageTaken={imageTakenHandler} />
+      <AddClothingScreen onImageTaken={imageTakenHandler} />
     );
     headerContent = <Header />;
   }
@@ -117,7 +119,7 @@ export default function App() {
   // Returns App Component
   return (
     <View style={styles.screen}>
-      <Header/>
+      <Header />
       {content}
     </View>
   );
