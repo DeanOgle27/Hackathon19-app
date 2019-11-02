@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AppLoading } from 'expo';
-import Header from './components/Header.js';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
 import Colors from './constants/Colors.js';
+
+// Imports all screens
+import AddClothingScreen from './screens/AddClothingScreen.js';
+import ConfirmationScreen from './screens/ConfirmationScreen.js';
+
+// Imports Components
+import Header from './components/Header.js';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -13,10 +19,6 @@ const fetchFonts = () => {
     'fira-sans-bold': require('./assets/fonts/FiraSans-BoldItalic.otf'),
   });
 };
-
-
-// Imports all screens
-import AddClothingScreen from './screens/AddClothingScreen.js';
 
 // Declares content variable
 let content;
@@ -62,7 +64,7 @@ handleUploadPhoto = (photo) => {
 export default function App() {
 
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('home');
+  const [currScreen, setCurrScreen] = useState('confirmation');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
@@ -76,6 +78,16 @@ export default function App() {
     );
   }
 
+  const toHome = () => {
+    setCurrScreen('home');
+  }
+
+  const toPickClothing = () => {
+    setCurrScreen('home');
+  }
+  const toConf = () => {
+    setCurrScreen('confirmation');
+  }
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
@@ -113,6 +125,11 @@ export default function App() {
   if (currScreen == 'home') {
     content = (
       <AddClothingScreen onImageTaken={imageTakenHandler} />
+    );
+    headerContent = <Header />;
+  } else if (currScreen == 'confirmation') {
+    content = (
+      <ConfirmationScreen onConfirm={toHome} />
     );
     headerContent = <Header />;
   }
