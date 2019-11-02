@@ -5,6 +5,7 @@ import Header from './components/Header.js';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
 import Colors from './constants/Colors.js';
+
 const fetchFonts = () => {
   return Font.loadAsync({
     'blackjack': require('./assets/fonts/blackjack.otf')
@@ -13,7 +14,7 @@ const fetchFonts = () => {
 
 
 // Imports all screens
-import WelcomeScreen from './screens/WelcomeScreen.js';
+import AddClothingScreen from './screens/AddClothingScreen.js';
 
 // Declares content variable
 let content;
@@ -25,14 +26,10 @@ const createFormData = (photo) => {
 
   data.append("photo", {
     name: 'file',
-    type: 'image',
+    type: photo.uri.split('.').pop(),
     uri:
-      Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+      photo.uri
   });
-
-  // Object.keys(body).forEach(key => {
-  //   data.append(key, body[key]);
-  // });
 
   return data;
 };
@@ -65,15 +62,18 @@ export default function App() {
   // Keeps track of current screen
   const [currScreen, setCurrScreen] = useState('home');
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [clothingImage, setClothingImage] = useState();
+  const [images, setImages] = useState([]);
+
   if (!dataLoaded) {
     return (
       <AppLoading
-        startAsync ={fetchFonts}
+        startAsync={fetchFonts}
         onFinish={() => setDataLoaded(true)}
-        />
+      />
     );
   }
-  const [clothingImage, setClothingImage] = useState();
+
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
@@ -83,12 +83,14 @@ export default function App() {
     const imageName = imagePath.split('/').pop();
     const newImagePath = FileSystem.documentDirectory + imageName;
 
+    // Tries to move the image into the file system
     try {
       await FileSystem.moveAsync({
         from: clothingImage,
         to: newImagePath
       });
     } catch (err) {
+      // If there's a problem, it opens an alert
       Alert.alert(
         'Error Saving Image',
         'Big Oof',
@@ -108,17 +110,16 @@ export default function App() {
   // This logic sets the current screen
   if (currScreen == 'home') {
     content = (
-      <WelcomeScreen onImageTaken={imageTakenHandler} />
+      <AddClothingScreen onImageTaken={imageTakenHandler} />
     );
     headerContent = <Header />;
-    //footerContent = <EmptyFooter />;
   }
 
 
   // Returns App Component
   return (
     <View style={styles.screen}>
-      <Header/>
+      <Header />
       {content}
     </View>
   );

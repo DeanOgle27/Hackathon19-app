@@ -5,12 +5,11 @@ import ImgPicker from '../components/ImagePicker.js';
 
 const WelcomeScreen = props => {
     return (
-        
+
         <View style={styles.container}>
-            <Header />
             <ImgPicker onImageTaken={props.onImageTaken} />
         </View>
-        
+
     );
 };
 
@@ -23,10 +22,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 19,
         fontWeight: 'bold',
-      },
+    },
     activeTitle: {
         color: 'red',
-      },
+    },
 
 
 });
