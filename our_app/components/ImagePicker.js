@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Button, Image, Text, StyleSheet, Alert, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 const ImgPicker = props => {
+    const [pickedImage, setPickedImage] = useState();
+
     const verifyPermissions = async () => {
-        const result = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const result = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
         if (result.status !== 'granted') {
             Alert.alert(
                 'Insufficient permissions!',
@@ -20,20 +22,30 @@ const ImgPicker = props => {
     const takeImageHandler = async () => {
         const hasPermission = await verifyPermissions();
         if (!hasPermission) {
+            console.log("NO PERMISSION")
             return;
         }
-        ImagePicker.launchCameraAsync();
+        const image = await ImagePicker.launchCameraAsync({
+            quality: 1,
+        });
+
+        setPickedImage(image.uri);
+        props.onImageTake(image.uri);
     };
+
+
 
     return (
         <View style={styles.imagePicker}>
             <View style={styles.imagePreview}>
-                <Text>No image picked yet.</Text>
-                <Image style={styles.image} />
+                {!pickedImage ? (
+                    <Text>No image picked yet.</Text>
+                ) : (
+                        <Image style={styles.image} source={{ uri: pickedImage }} />
+                    )}
             </View>
             <Button
                 title="Take Image"
-                color={Colors.primary}
                 onPress={takeImageHandler}
             />
         </View>
@@ -54,7 +66,8 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     image: {
-        width: '100%',
+        flex: 1,
+        width: Dimensions.get('window').width * 0.5,
         height: '100%'
     }
 });

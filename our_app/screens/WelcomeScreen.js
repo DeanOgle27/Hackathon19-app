@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 
+import Header from '../components/Header.js';
 import ImgPicker from '../components/ImagePicker.js';
 
 const WelcomeScreen = props => {
     return (
         <View style={styles.container}>
-            <Text>Something</Text>
-            <ImgPicker />
+            <Header />
+            <ImgPicker onImageTaken={props.onImageTaken} />
         </View>
     );
 };
