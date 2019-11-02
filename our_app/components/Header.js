@@ -8,6 +8,7 @@ import Colors from '../constants/Colors.js';
 const Header = props => {
     return (
         <View style = {styles.header}>
+                
                 <Text style = {styles.headerTitle}>PickFit</Text>
         </View>
     );
