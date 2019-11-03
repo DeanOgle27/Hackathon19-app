@@ -33,11 +33,6 @@ import CLOTHING from "./data/clothing.js";
 const SERVERURL = "172.20.10.3";
 const PORTNUMBER = "8080";
 
-// In future will get stuff from server
-const getWardrobe = () => {
-  return CLOTHING;
-};
-
 const fetchFonts = () => {
   return Font.loadAsync({
     blackjack: require("./assets/fonts/blackjack.otf"),
@@ -64,26 +59,29 @@ export default function App() {
   // Creates form data from an image
   const createFormData = photo => {
     const data = new FormData();
-
     data.append("photo", {
       name: "file",
-      type: photo.uri.split(".").pop(),
+      type: `.${photo.uri.split(".").pop()}`,
       uri: photo.uri
     });
-
     return data;
   };
 
   // Uploads the photo
   const handleUploadPhoto = async photo => {
+    console.log("before");
     setIsFetching(true);
+    console.log("after");
+    const data = createFormData({
+      name: "file",
+      type: photo.uri.split(".").pop(),
+      uri: photo.uri
+    });
+    console.log(data);
+    console.log(`Uploading photo as ${data._parts}`);
     fetch(`http://${SERVERURL}:${PORTNUMBER}/app/upload`, {
       method: "POST",
-      body: createFormData({
-        name: "file",
-        type: photo.uri.split(".").pop(),
-        uri: photo.uri
-      })
+      body: {}
     })
       .then(response => response.json())
       .then(response => {
@@ -146,34 +144,47 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-    // .then(response => {
-    //   console.log(response);
-    //   return response;
-    // })
-    // .then(response => {
-    //   console.log("GOT RESPONSE");
-    //   console.log(response);
-    // })
-    // .catch(error => {
-    //   console.log("upload error", error);
-    //   alert("Upload failed!");
-    // });
     setIsFetching(false);
   };
 
-  // Grabs the wardrobe
+  // Grabs the wardrobe based on recommendation
   const handleRecommendation = async () => {
     setIsFetching(true);
     // These should be replaced with stuff that gets passed into the function
-    const temperature = 45;
-    const type_cloth = "casual";
+    const temp = "45";
+    const style = "casual";
+    const user = "1";
 
     fetch(`http://${SERVERURL}:${PORTNUMBER}/app/recommend`, {
       method: "POST",
-      body: {
-        temp: temperature,
-        type: type_cloth
-      }
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        temp,
+        style,
+        user
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Whoops! Something went wrong on our end.");
+      });
+
+    setIsFetching(false);
+  };
+
+  // Grabs the wardrobe based on recommendation
+  const handleWardrobe = async () => {
+    setIsFetching(true);
+
+    fetch(`http://${SERVERURL}:${PORTNUMBER}/db/dump`, {
+      method: "GET"
     })
       .then(response => response.json())
       .then(response => {
@@ -231,35 +242,6 @@ export default function App() {
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
-    setIsFetching(true);
-    setSelectedImage(imagePath);
-
-    // Grabs the name of the picture (the filename will be something like 'file/foldera/folderb/img/temp/image23452.jpg', this grabs 'image23452.jpg')
-    const imageName = imagePath.split("/").pop();
-    const newImagePath = FileSystem.documentDirectory + imageName;
-
-    // Tries to move the image into the file system
-    try {
-      await FileSystem.moveAsync({
-        from: clothingImage,
-        to: newImagePath
-      });
-    } catch (err) {
-      // If there's a problem, it opens an alert
-      Alert.alert(
-        "Error Saving Image",
-        "Big Oof",
-        [
-          {
-            text: "OK",
-            style: "cancel"
-          }
-        ],
-        { cancelable: false }
-      );
-      console.log(err);
-    }
-    setIsFetching(false);
     handleUploadPhoto(imagePath);
   }
 
@@ -296,8 +278,8 @@ export default function App() {
       // eventually pass wardrobe in
       <HomeScreen
         toClothing={toPickClothing}
-        toWardrobe={toWard}
-        toRecommend={toRecommend}
+        toWardrobe={handleWardrobe}
+        toRecommend={handleRecommendation}
         toLogin={toLogin}
         toSignUp={toSignup}
       />
