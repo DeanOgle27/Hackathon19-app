@@ -18,6 +18,7 @@ const LoginScreen = props => {
   const [pass, setPass] = useState('');
   const enterLoginHandler = () => {
     props.postLoginInfo(username, pass);
+    props.toHome();
   }
   const enterSignupHandler = () => {
     props.toSignup();

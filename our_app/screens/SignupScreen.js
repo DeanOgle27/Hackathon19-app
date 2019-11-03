@@ -16,9 +16,10 @@ const SignupScreen = props => {
   // Stores Entered Credentials
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
-  const [passConfirm, setPassConfirm] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   const enterHandler = () => {
-    props.function(username, pass, passConfirm);
+    props.postSignupInfo(username, pass, confirmPass);
+    props.toHome();
   }
   return (
     <View style={styles.container}>
@@ -43,8 +44,19 @@ const SignupScreen = props => {
           value={pass}
           secureTextEntry={true}
         />
+        <Text style={styles.promptText}>Confirm Password:</Text>
+        <TextInput
+          style={styles.input}
+          blurOnSubmit
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={setConfirmPass}
+          value={confirmPass}
+          secureTextEntry={true}
+        />
+
         <TouchableOpacity onPress={enterHandler} style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Enter</Text>
+          <Text style={styles.textStyle}>Signup</Text>
         </TouchableOpacity>
       </View>
     </View>

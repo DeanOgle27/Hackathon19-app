@@ -173,12 +173,12 @@ export default function App() {
     headerContent = <Header onPress={toHome} />;
   } else if (currScreen === 'login') {
     content = (
-      <LoginScreen postLoginInfo={postLoginInfo} toSignup = {toSignup}/>
+      <LoginScreen postLoginInfo={postLoginInfo} toSignup = {toSignup} toHome = {toHome}/>
     );
     headerContent = <Header onPress={toHome} />;
   } else if (currScreen === 'signup') {
     content = (
-      <SignupScreen postSignupInfo = {postSignupInfo} />
+      <SignupScreen postSignupInfo = {postSignupInfo} toHome = {toHome}/>
     );
   }
 
