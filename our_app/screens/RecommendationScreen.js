@@ -88,7 +88,6 @@ const RecommendationScreen = props => {
             <Button title="Get Location" color={Colors.primary} onPress={getLocationHandler} />
             <Button title="Show Stuff" color={Colors.primary} onPress={averageTemp} />
         </View>
-
     );
 }
 

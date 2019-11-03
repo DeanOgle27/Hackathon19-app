@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Button, ImageBackground, ActivityIndicator } from 'react-native';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
@@ -42,96 +42,6 @@ const fetchFonts = () => {
 let content;
 let headerContent;
 
-// ######################################UPLOADING TO SERVER STUFF#####################################
-// Creates form data from an image
-const createFormData = (photo) => {
-  const data = new FormData();
-
-  data.append("photo", {
-    name: 'file',
-    type: photo.uri.split('.').pop(),
-    uri:
-      photo.uri
-  });
-
-  return data;
-};
-
-// Uploads the photo
-const handleUploadPhoto = async (photo) => {
-  fetch(`http://localhost:${PORTNUMBER}/app/upload`, {
-    method: "POST",
-    body: createFormData({
-      name: 'file',
-      type: photo.uri.split('.').pop(),
-      uri:
-        photo.uri
-    })
-  })
-    .then(response => response.json())
-    .then(response => {
-      console.log("upload succes", response);
-      alert("Upload success!");
-    })
-    .catch(error => {
-      console.log("upload error", error);
-      alert("Upload failed!");
-    });
-};
-
-// Uploads the username
-const handleUploadUser = async () => {
-  // These should be replaced by stuff that gets passed into this function
-  const entered_username = 'username';
-  const entered_password = 'password';
-
-  // Fetches stuff from the database
-  fetch(`http://localhost:${PORTNUMBER}/app/recommend`, {
-    method: "POST",
-    body: JSON.stringify({
-      username: entered_username,
-      password: entered_password
-    })
-  })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log("upload error", error);
-      alert("Upload failed!");
-    });
-
-};
-
-// Grabs the wardrobe
-const handleRecommendation = async () => {
-  // These should be replaced with stuff that gets passed into the function
-  const temperature = 45;
-  const type_cloth = 'casual';
-
-  fetch(`http://localhost:${PORTNUMBER}/app/recommend`, {
-    method: "POST",
-    body: {
-      temp: temperature,
-      type: type_cloth
-    }
-  })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log("upload error", error);
-      alert("Upload failed!");
-    });
-}
-// ######################################END UPLOADING TO SERVER STUFF#####################################
-
-
-
-
-
 
 export default function App() {
 
@@ -140,6 +50,137 @@ export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
+  const [loginWorked, setLoginWorked] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+
+  // ######################################UPLOADING TO SERVER STUFF#####################################
+  // Creates form data from an image
+  const createFormData = (photo) => {
+    const data = new FormData();
+
+    data.append("photo", {
+      name: 'file',
+      type: photo.uri.split('.').pop(),
+      uri:
+        photo.uri
+    });
+
+    return data;
+  };
+
+  // Uploads the photo
+  const handleUploadPhoto = async (photo) => {
+    setIsFetching(true);
+    fetch(`http://localhost:${PORTNUMBER}/app/upload`, {
+      method: "POST",
+      body: createFormData({
+        name: 'file',
+        type: photo.uri.split('.').pop(),
+        uri:
+          photo.uri
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log("upload succes", response);
+        alert("Upload success!");
+      })
+      .catch(error => {
+        console.log("upload error", error);
+        alert("Upload failed!");
+      });
+    setIsFetching(false);
+  };
+
+  // Uploads the username for sign up
+  const handleSignUp = async (entered_username, entered_password) => {
+    setIsFetching(true);
+    // Fetches stuff from the database
+    fetch(`http://localhost:${PORTNUMBER}/index/db/enroll`, {
+      method: "POST",
+      body: JSON.stringify({
+        username: entered_username,
+        password: entered_password
+      })
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log("upload error", error);
+        alert("Upload failed!");
+      });
+    setIsFetching(false);
+  };
+
+  // Uploads the username for log in
+  const handleLogIn = async (entered_username, entered_password) => {
+    setIsFetching(true);
+    const bdy = JSON.stringify({
+      username: entered_username,
+      password: entered_password
+    });
+    console.log(JSON.parse(bdy));
+    // Fetches stuff from the database
+    fetch(`http://localhost:${PORTNUMBER}/index/db/login`, {
+      method: "POST",
+      body: bdy
+    })
+      .then((response) => {
+        console.log("YO");
+        console.log(response);
+        return response;
+      })
+      .then(response => {
+        console.log("GOT RESPONSE");
+        console.log(response);
+        console.log(response.JSON());
+        // Check For Invalid Login Here
+        if (true) {
+          setLoginWorked(true)
+        } else {
+          setLoginWorked(false)
+        }
+        // End Check for Valid Login
+      })
+      .catch(error => {
+        console.log("upload error", error);
+        alert("Upload failed!");
+      });
+    setIsFetching(false);
+  };
+
+  // Grabs the wardrobe
+  const handleRecommendation = async () => {
+    setIsFetching(true);
+    // These should be replaced with stuff that gets passed into the function
+    const temperature = 45;
+    const type_cloth = 'casual';
+
+    fetch(`http://localhost:${PORTNUMBER}/app/recommend`, {
+      method: "POST",
+      body: {
+        temp: temperature,
+        type: type_cloth
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log("upload error", error);
+        alert("Upload failed!");
+      });
+
+    setIsFetching(false);
+  }
+  // ######################################END UPLOADING TO SERVER STUFF#####################################
+
+
+
 
   if (!dataLoaded) {
     return (
@@ -150,9 +191,10 @@ export default function App() {
     );
   }
 
-  const postLoginInfo = (username, password) => {
+  const postLoginInfo = async (username, password) => {
     console.log(username);
     console.log(password);
+    handleLogIn(username, password);
   }
 
   const postSignupInfo = (username, password, confirmPassword) => {
@@ -186,6 +228,7 @@ export default function App() {
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
+    setIsFetching(true);
     setSelectedImage(imagePath);
 
     // Grabs the name of the picture (the filename will be something like 'file/foldera/folderb/img/temp/image23452.jpg', this grabs 'image23452.jpg')
@@ -213,11 +256,12 @@ export default function App() {
       );
       console.log(err);
     }
+    setIsFetching(false);
   };
 
   // Image Handler Function
   async function sendUsername() {
-
+    setIsFetching(true);
     // Tries to move the image into the file system
     try {
       await FileSystem.moveAsync({
@@ -239,6 +283,7 @@ export default function App() {
       );
       console.log(err);
     }
+    setIsFetching(false);
   };
 
 
@@ -280,6 +325,9 @@ export default function App() {
   }
 
   // Returns App Component
+  if (isFetching) {
+    return <ActivityIndicator size='large' color={Colors.primary} />;
+  }
   return (
     <View style={styles.screen}>
       {headerContent}
