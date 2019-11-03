@@ -20,6 +20,7 @@ const fetchFonts = () => {
 
 // Declares content variable
 let content;
+let headerContent;
 
 // ######################################UPLOADING TO SERVER STUFF#####################################
 // Creates form data from an image
@@ -124,18 +125,18 @@ export default function App() {
     content = (
       <AddClothingScreen onImageTaken={imageTakenHandler} />
     );
-    headerContent = <Header />;
+    headerContent = <Header onPress={() => console.log("Hello")} />;
   } else if (currScreen == 'confirmation') {
     content = (
       <ConfirmationScreen onConfirm={toHome} />
     );
-    headerContent = <Header />;
+    headerContent = <Header onPress={toHome} />;
   }
 
   // Returns App Component
   return (
     <View style={styles.screen}>
-      <Header />
+      {headerContent}
       {content}
     </View>
   );
