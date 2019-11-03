@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AppLoading } from 'expo';
-import Header from '../components/Header.js';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
 import Colors from '../constants/Colors.js';
+import ServiceButton from '../components/ServiceButton.js';
 
-const WelcomeScreen  = propos => {
+const HomeScreen = props => {
     return (
-        <View style = {style.container}>
-            <ServiceButton />
+        <View style = {styles.container}>
+            <ServiceButton value = "Add Fit" color = {Colors.primary}/>
+            <ServiceButton value = "My Wardrobe" color = {Colors.secondary}/>
         </View>
-    )
+    );
 }
-// 
+
 const styles = StyleSheet.create({
     screen: {
       flex: 1
@@ -25,3 +26,5 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
   });
+
+  export default HomeScreen;

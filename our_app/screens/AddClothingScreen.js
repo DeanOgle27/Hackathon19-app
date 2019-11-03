@@ -3,9 +3,8 @@ import Header from '../components/Header.js';
 import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import ImgPicker from '../components/ImagePicker.js';
 
-const WelcomeScreen = props => {
+const AddClothingScreen = props => {
     return (
-
         <View style={styles.container}>
             <ImgPicker onImageTaken={props.onImageTaken} />
         </View>
@@ -30,4 +29,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WelcomeScreen;
+export default AddClothingScreen;

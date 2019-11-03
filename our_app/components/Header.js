@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Colors from '../constants/Colors.js';
+import ServiceButton from './ServiceButton.js';
 //import { LinearGradient } from 'expo-linear-gradient';
 //import TitleText from './TitleText';
 
@@ -11,6 +12,7 @@ const Header = props => {
                 
                 <Text style = {styles.headerTitle}>PickFit</Text>
         </View>
+
     );
 };
 

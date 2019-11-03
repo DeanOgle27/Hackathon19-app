@@ -5,13 +5,12 @@ import { View, StyleSheet, TouchableHighlight, Text, Touchable } from 'react-nat
 //import { LinearGradient } from 'expo-linear-gradient';
 //import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 
-import Colors from '../constants/colors';
 
 
 const ServiceButton = props => {
     return (
         <View style={styles.card}>
-            <Text style={styles.fieldText}>{props.field.concat(':')}</Text>
+            {/* <Text style={styles.fieldText}>{props.field.concat(':')}</Text> */}
             <Text style={styles.valueText}>{props.value}</Text>
         </View>
 
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
         fontFamily: 'blackjack',
     },
     valueText: {
-        fontFamily: 'FiraSans-Book',
+        fontFamily: 'fira-sans-bold',
     }
 
 });

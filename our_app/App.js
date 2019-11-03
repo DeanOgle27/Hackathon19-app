@@ -6,8 +6,9 @@ import * as FileSystem from 'expo-file-system';
 import Colors from './constants/Colors.js';
 
 // Imports all screens
-import AddClothingScreen from './screens/AddClothingScreen.js';
 import ConfirmationScreen from './screens/ConfirmationScreen.js';
+import HomeScreen from './screens/HomeScreen.js';
+import AddClothingScreen from './screens/AddClothingScreen.js';
 
 // Imports Components
 import Header from './components/Header.js';
@@ -123,6 +124,10 @@ export default function App() {
 
   // This logic sets the current screen
   if (currScreen == 'home') {
+    content = (
+      <HomeScreen />
+    );
+  } else if (currScreen == 'add-clothing') {
     content = (
       <AddClothingScreen onImageTaken={imageTakenHandler} />
     );
