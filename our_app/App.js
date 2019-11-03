@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import * as FileSystem from 'expo-file-system';
@@ -177,9 +177,12 @@ export default function App() {
   const toSignup = () => {
     setCurrScreen('signup');
   }
-
+  const toRecommend = () => {
+    setCurrScreen('recommend');
+  }
   const toWard = () => {
     setCurrScreen('wardrobe');
+    console.log("Cheeks");
   }
 
   // Image Handler Function
@@ -244,7 +247,7 @@ export default function App() {
   if (currScreen === 'home') {
     content = (
       // eventually pass wardrobe in
-      <HomeScreen pickClothing={toPickClothing} openWardrobe={toWard} />
+      <HomeScreen toClothing={toPickClothing} toWardrobe={toWard} toRecommend={toRecommend} />
     );
   } else if (currScreen === 'add-clothing') {
     content = (
