@@ -18,6 +18,11 @@ const SignupScreen = props => {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const enterHandler = () => {
+    // TODO make this alert nicer
+    if (pass !== confirmPass) {
+      Alert.alert("Passwords Dont Match");
+      return;
+    }
     props.postSignupInfo(username, pass, confirmPass);
     props.toHome();
   }
@@ -32,7 +37,7 @@ const SignupScreen = props => {
           autoCorrect={false}
           onChangeText={setUsername}
           value={username}
-          placeholder="6140005555"
+          placeholder="Username"
         />
         <Text style={styles.promptText}>Password:</Text>
         <TextInput

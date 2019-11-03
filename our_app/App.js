@@ -52,6 +52,7 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [loginWorked, setLoginWorked] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [recommendedImage, setRecommendedImage] = useState();
 
 
   // ######################################UPLOADING TO SERVER STUFF#####################################
@@ -200,7 +201,7 @@ export default function App() {
   const postSignupInfo = (username, password, confirmPassword) => {
     console.log(username);
     console.log(password);
-    console.log(confirmPassword);
+    handleSignUp(username, password);
   }
 
   const toHome = () => {
@@ -219,6 +220,7 @@ export default function App() {
     setCurrScreen('signup');
   }
   const toRecommend = () => {
+    handleRecommendation();
     setCurrScreen('recommend');
   }
   const toWard = () => {
@@ -257,6 +259,7 @@ export default function App() {
       console.log(err);
     }
     setIsFetching(false);
+    handleUploadPhoto(imagePath);
   };
 
   // Image Handler Function

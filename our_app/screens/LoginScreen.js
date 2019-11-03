@@ -34,7 +34,7 @@ const LoginScreen = props => {
           autoCorrect={false}
           onChangeText={setUsername}
           value={username}
-          placeholder="6140005555"
+          placeholder="Username"
         />
         <Text style={styles.promptText}>Password:</Text>
         <TextInput
@@ -48,9 +48,6 @@ const LoginScreen = props => {
         />
         <TouchableOpacity onPress={enterLoginHandler} style={styles.buttonStyle}>
           <Text style={styles.textStyle}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={enterSignupHandler} style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Signup</Text>
         </TouchableOpacity>
       </View>
     </View>
