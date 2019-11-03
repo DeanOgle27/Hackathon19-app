@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
     },
     confirmTextStyle: {
-        fontFamily: 'blackjack',
+        fontFamily: 'fira-sans-bold',
         color: Colors.primary,
         fontSize: 42,
         marginTop: 20,
