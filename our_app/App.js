@@ -16,6 +16,7 @@ import WardrobeScreen from './screens/WardrobeScreen.js';
 import LoginScreen from './screens/LoginScreen.js';
 import RecommendationScreen from './screens/RecommendationScreen';
 
+import SignupScreen from './screens/SignupScreen.js';
 // Imports Components
 import Header from './components/Header.js';
 
@@ -87,10 +88,10 @@ const handleUploadUser = async () => {
   // Fetches stuff from the database
   fetch(`http://localhost:${PORTNUMBER}/app/recommend`, {
     method: "POST",
-    body: {
+    body: JSON.stringify({
       username: entered_username,
       password: entered_password
-    }
+    })
   })
     .then(response => response.json())
     .then(response => {
@@ -149,10 +150,15 @@ export default function App() {
     );
   }
 
-
   const postLoginInfo = (username, password) => {
     console.log(username);
     console.log(password);
+  }
+
+  const postSignupInfo = (username, password, confirmPassword) => {
+    console.log(username);
+    console.log(password);
+    console.log(confirmPassword);
   }
 
   const toHome = () => {
@@ -166,7 +172,10 @@ export default function App() {
     setCurrScreen('confirmation');
   }
   const toLogin = () => {
-    serCurrScreen('login');
+    setCurrScreen('login');
+  }
+  const toSignup = () => {
+    setCurrScreen('signup');
   }
 
   const toWard = () => {
@@ -254,7 +263,7 @@ export default function App() {
     headerContent = <Header onPress={toHome} />;
   } else if (currScreen === 'login') {
     content = (
-      <LoginScreen function={postLoginInfo} />
+      <LoginScreen postLoginInfo={postLoginInfo} toSignup={toSignup} toHome={toHome} />
     );
     headerContent = <Header onPress={toHome} />;
   } else if (currScreen === 'recommend') {
@@ -262,12 +271,15 @@ export default function App() {
       <RecommendationScreen />
     );
     headerContent = <Header onPress={toHome} />;
+  } else if (currScreen === 'signup') {
+    content = (
+      <SignupScreen postSignupInfo={postSignupInfo} toHome={toHome} />
+    );
   }
 
   // Returns App Component
   return (
     <View style={styles.screen}>
-      <Button Title="DO THE FUCKING SPICE" onPress={handleUploadUser} />
       {headerContent}
       {content}
     </View>

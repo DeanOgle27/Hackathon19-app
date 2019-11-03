@@ -11,17 +11,15 @@ import {
 
 import Colors from '../constants/Colors.js';
 
-const LoginScreen = props => {
+const SignupScreen = props => {
 
   // Stores Entered Credentials
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
-  const enterLoginHandler = () => {
-    props.postLoginInfo(username, pass);
+  const [confirmPass, setConfirmPass] = useState('');
+  const enterHandler = () => {
+    props.postSignupInfo(username, pass, confirmPass);
     props.toHome();
-  }
-  const enterSignupHandler = () => {
-    props.toSignup();
   }
   return (
     <View style={styles.container}>
@@ -46,10 +44,18 @@ const LoginScreen = props => {
           value={pass}
           secureTextEntry={true}
         />
-        <TouchableOpacity onPress={enterLoginHandler} style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={enterSignupHandler} style={styles.buttonStyle}>
+        <Text style={styles.promptText}>Confirm Password:</Text>
+        <TextInput
+          style={styles.input}
+          blurOnSubmit
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={setConfirmPass}
+          value={confirmPass}
+          secureTextEntry={true}
+        />
+
+        <TouchableOpacity onPress={enterHandler} style={styles.buttonStyle}>
           <Text style={styles.textStyle}>Signup</Text>
         </TouchableOpacity>
       </View>
@@ -105,4 +111,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SignupScreen;
