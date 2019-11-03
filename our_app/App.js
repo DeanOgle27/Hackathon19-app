@@ -9,6 +9,7 @@ import Colors from './constants/Colors.js';
 import ConfirmationScreen from './screens/ConfirmationScreen.js';
 import HomeScreen from './screens/HomeScreen.js';
 import AddClothingScreen from './screens/AddClothingScreen.js';
+import LoginScreen from './screens/LoginScreen.js';
 
 // Imports Components
 import Header from './components/Header.js';
@@ -66,7 +67,7 @@ handleUploadPhoto = (photo) => {
 export default function App() {
 
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('confirmation');
+  const [currScreen, setCurrScreen] = useState('login');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
@@ -84,11 +85,19 @@ export default function App() {
     setCurrScreen('home');
   }
 
+  const postLoginInfo = (username, password) => {
+    console.log(username);
+    console.log(password);
+  }
+
   const toPickClothing = () => {
     setCurrScreen('add-clothing');
   }
   const toConf = () => {
     setCurrScreen('confirmation');
+  }
+  const toLogin = () => {
+    serCurrScreen('login');
   }
 
   // Image Handler Function
@@ -124,19 +133,24 @@ export default function App() {
 
 
   // This logic sets the current screen
-  if (currScreen == 'home') {
+  if (currScreen === 'home') {
     content = (
       // eventually pass wardrobe in
       <HomeScreen pickClothing = {toPickClothing}/>
     );
-  } else if (currScreen == 'add-clothing') {
+  }  else if (currScreen === 'add-clothing') {
     content = (
       <AddClothingScreen onImageTaken={imageTakenHandler} />
     );
     headerContent = <Header onPress={() => console.log("Hello")} />;
-  } else if (currScreen == 'confirmation') {
+  } else if (currScreen === 'confirmation') {
     content = (
       <ConfirmationScreen onConfirm={toHome} />
+    );
+    headerContent = <Header onPress={toHome} />;
+  } else if (currScreen === 'login'){
+    content = (
+      <LoginScreen function = {postLoginInfo}/>
     );
     headerContent = <Header onPress={toHome} />;
   }
