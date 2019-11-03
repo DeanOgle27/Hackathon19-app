@@ -85,7 +85,7 @@ export default function App() {
   }
 
   const toPickClothing = () => {
-    setCurrScreen('home');
+    setCurrScreen('add-clothing');
   }
   const toConf = () => {
     setCurrScreen('confirmation');
@@ -126,7 +126,8 @@ export default function App() {
   // This logic sets the current screen
   if (currScreen == 'home') {
     content = (
-      <HomeScreen />
+      // eventually pass wardrobe in
+      <HomeScreen pickClothing = {toPickClothing}/>
     );
   } else if (currScreen == 'add-clothing') {
     content = (

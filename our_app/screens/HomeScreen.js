@@ -9,7 +9,7 @@ import ServiceButton from '../components/ServiceButton.js';
 const HomeScreen = props => {
     return (
         <View style = {styles.container}>
-            <ServiceButton value = "Add Fit" color = {Colors.primary}/>
+            <ServiceButton value = "Add Fit" color = {Colors.primary} function = {props.pickClothing}/>
             <ServiceButton value = "My Wardrobe" color = {Colors.secondary}/>
         </View>
     );

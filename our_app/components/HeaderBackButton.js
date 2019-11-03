@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
 import { Ionicons } from '@expo/vector-icons';
-
 import Colors from '../constants/Colors.js';
 
 const HeaderBackButton = props => {
