@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Button } from 'react-native';
 import Colors from '../constants/Colors.js';
 import ServiceButton from '../components/ServiceButton.js';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -54,6 +54,8 @@ const HomeScreen = props => {
             </LinearGradient>
           </TouchableOpacity>
         </ImageBackground>
+        <Button title="Log In" onPress={props.toLogin} />
+        <Button title="Sign Up" onPress={props.toSignUp} />
 
       </View>
     </View>

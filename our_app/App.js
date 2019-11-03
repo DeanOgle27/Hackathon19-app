@@ -136,7 +136,7 @@ const handleRecommendation = async () => {
 export default function App() {
 
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('recommend');
+  const [currScreen, setCurrScreen] = useState('login');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
@@ -246,7 +246,7 @@ export default function App() {
   if (currScreen === 'home') {
     content = (
       // eventually pass wardrobe in
-      <HomeScreen toClothing={toPickClothing} toWardrobe={toWard} toRecommend={toRecommend} />
+      <HomeScreen toClothing={toPickClothing} toWardrobe={toWard} toRecommend={toRecommend} toLogin={toLogin} toSignUp={toSignup} />
     );
   } else if (currScreen === 'add-clothing') {
     content = (

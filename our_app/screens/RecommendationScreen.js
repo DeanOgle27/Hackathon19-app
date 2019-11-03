@@ -13,6 +13,7 @@ import * as Permissions from 'expo-permissions';
 import Colors from '../constants/Colors.js';
 
 const RecommendationScreen = props => {
+    const [gotRecommendation, setGotRecommendation] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
     const [tempInfo, setTempInfo] = useState();
 

@@ -1,9 +1,9 @@
 {
-  "expoServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://am-c2z.anonymous.our-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.am-c2z.anonymous.our-app.exp.direct",
+  "ngrokPid": 80258,
   "devToolsPort": 19004,
-  "packagerPort": null,
-  "packagerPid": null
+  "packagerPort": 19003,
+  "packagerPid": 80217
 }
