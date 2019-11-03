@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://33-226.anonymous.our-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.33-226.anonymous.our-app.exp.direct",
-  "ngrokPid": 11122,
-  "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 11102
+  "expoServerNgrokUrl": "https://ti-bg7.anonymous.our-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.ti-bg7.anonymous.our-app.exp.direct",
+  "ngrokPid": 76011,
+  "devToolsPort": 19003,
+  "packagerPort": 19002,
+  "packagerPid": 76003
 }

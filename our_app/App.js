@@ -9,9 +9,18 @@ import Colors from './constants/Colors.js';
 import ConfirmationScreen from './screens/ConfirmationScreen.js';
 import HomeScreen from './screens/HomeScreen.js';
 import AddClothingScreen from './screens/AddClothingScreen.js';
+import WardrobeScreen from './screens/WardrobeScreen.js';
 
 // Imports Components
 import Header from './components/Header.js';
+
+// Gets Model Data
+import CLOTHING from './data/clothing.js';
+
+// In future will get stuff from server
+const getWardrobe = () => {
+  return CLOTHING;
+}
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -66,7 +75,7 @@ handleUploadPhoto = (photo) => {
 export default function App() {
 
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('confirmation');
+  const [currScreen, setCurrScreen] = useState('wardrobe');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
@@ -136,6 +145,11 @@ export default function App() {
   } else if (currScreen == 'confirmation') {
     content = (
       <ConfirmationScreen onConfirm={toHome} />
+    );
+    headerContent = <Header onPress={toHome} />;
+  } else if (currScreen == 'wardrobe') {
+    content = (
+      <WardrobeScreen loadWardrobe={getWardrobe} />
     );
     headerContent = <Header onPress={toHome} />;
   }
