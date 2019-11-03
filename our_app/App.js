@@ -11,7 +11,7 @@ import HomeScreen from './screens/HomeScreen.js';
 import AddClothingScreen from './screens/AddClothingScreen.js';
 import WardrobeScreen from './screens/WardrobeScreen.js';
 import LoginScreen from './screens/LoginScreen.js';
-
+import SignupScreen from './screens/SignupScreen.js';
 // Imports Components
 import Header from './components/Header.js';
 
@@ -76,7 +76,6 @@ handleUploadPhoto = (photo) => {
 export default function App() {
 
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('wardrobe');
   const [currScreen, setCurrScreen] = useState('login');
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
@@ -91,13 +90,19 @@ export default function App() {
     );
   }
 
-  const toHome = () => {
-    setCurrScreen('home');
-  }
-
   const postLoginInfo = (username, password) => {
     console.log(username);
     console.log(password);
+  }
+
+  const postSignupInfo = (username, password, confirmPassword) => {
+    console.log(username);
+    console.log(password);
+    console.log(confirmPassword);
+  }
+
+  const toHome = () => {
+    setCurrScreen('home');
   }
 
   const toPickClothing = () => {
@@ -107,7 +112,10 @@ export default function App() {
     setCurrScreen('confirmation');
   }
   const toLogin = () => {
-    serCurrScreen('login');
+    setCurrScreen('login');
+  }
+  const toSignup = () => {
+    setCurrScreen('signup');
   }
 
   // Image Handler Function
@@ -165,9 +173,13 @@ export default function App() {
     headerContent = <Header onPress={toHome} />;
   } else if (currScreen === 'login') {
     content = (
-      <LoginScreen function={postLoginInfo} />
+      <LoginScreen postLoginInfo={postLoginInfo} toSignup = {toSignup}/>
     );
     headerContent = <Header onPress={toHome} />;
+  } else if (currScreen === 'signup') {
+    content = (
+      <SignupScreen postSignupInfo = {postSignupInfo} />
+    );
   }
 
   // Returns App Component

@@ -11,16 +11,14 @@ import {
 
 import Colors from '../constants/Colors.js';
 
-const LoginScreen = props => {
+const SignupScreen = props => {
 
   // Stores Entered Credentials
   const [username, setUsername] = useState('');
   const [pass, setPass] = useState('');
-  const enterLoginHandler = () => {
-    props.postLoginInfo(username, pass);
-  }
-  const enterSignupHandler = () => {
-    props.toSignup();
+  const [passConfirm, setPassConfirm] = useState('');
+  const enterHandler = () => {
+    props.function(username, pass, passConfirm);
   }
   return (
     <View style={styles.container}>
@@ -45,11 +43,8 @@ const LoginScreen = props => {
           value={pass}
           secureTextEntry={true}
         />
-        <TouchableOpacity onPress={enterLoginHandler} style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={enterSignupHandler} style={styles.buttonStyle}>
-          <Text style={styles.textStyle}>Signup</Text>
+        <TouchableOpacity onPress={enterHandler} style={styles.buttonStyle}>
+          <Text style={styles.textStyle}>Enter</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -104,4 +99,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SignupScreen;

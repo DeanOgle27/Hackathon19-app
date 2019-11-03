@@ -1,1 +1,8 @@
-{}
+{
+  "expoServerPort": 19004,
+  "packagerPort": 19005,
+  "packagerPid": 14066,
+  "expoServerNgrokUrl": "https://ve-ks6.anonymous.our-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.ve-ks6.anonymous.our-app.exp.direct",
+  "ngrokPid": 14088
+}
