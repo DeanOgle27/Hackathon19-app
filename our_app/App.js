@@ -164,7 +164,6 @@ export default function App() {
   const toHome = () => {
     setCurrScreen('home');
   }
-
   const toPickClothing = () => {
     setCurrScreen('add-clothing');
   }
