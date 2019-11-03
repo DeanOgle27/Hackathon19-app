@@ -1,9 +1,10 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://am-c2z.anonymous.our-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.am-c2z.anonymous.our-app.exp.direct",
-  "ngrokPid": 80258,
-  "devToolsPort": 19004,
+  "expoServerNgrokUrl": "https://h6-stf.anonymous.our-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.h6-stf.anonymous.our-app.exp.direct",
+  "ngrokPid": 18566,
+  "devToolsPort": 19002,
   "packagerPort": 19003,
-  "packagerPid": 80217
+  "packagerPid": 18553,
+  "webpackServerPort": null
 }

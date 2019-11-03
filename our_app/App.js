@@ -1,40 +1,48 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, ImageBackground, ActivityIndicator } from 'react-native';
-import { AppLoading } from 'expo';
-import * as Font from 'expo-font';
-import * as FileSystem from 'expo-file-system';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ImageBackground,
+  ActivityIndicator
+} from "react-native";
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
+import * as FileSystem from "expo-file-system";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Imports constants
-import Colors from './constants/Colors.js';
+import Colors from "./constants/Colors.js";
 
 // Imports all screens
-import ConfirmationScreen from './screens/ConfirmationScreen.js';
-import HomeScreen from './screens/HomeScreen.js';
-import AddClothingScreen from './screens/AddClothingScreen.js';
-import WardrobeScreen from './screens/WardrobeScreen.js';
-import LoginScreen from './screens/LoginScreen.js';
-import RecommendationScreen from './screens/RecommendationScreen';
+import ConfirmationScreen from "./screens/ConfirmationScreen.js";
+import HomeScreen from "./screens/HomeScreen.js";
+import AddClothingScreen from "./screens/AddClothingScreen.js";
+import WardrobeScreen from "./screens/WardrobeScreen.js";
+import LoginScreen from "./screens/LoginScreen.js";
+import RecommendationScreen from "./screens/RecommendationScreen";
 
-import SignupScreen from './screens/SignupScreen.js';
+import SignupScreen from "./screens/SignupScreen.js";
 // Imports Components
-import Header from './components/Header.js';
+import Header from "./components/Header.js";
 
 // Gets Model Data
-import CLOTHING from './data/clothing.js';
+import CLOTHING from "./data/clothing.js";
 
-const PORTNUMBER = '8080';
+const SERVERURL = "172.20.10.3";
+const PORTNUMBER = "8080";
 
 // In future will get stuff from server
 const getWardrobe = () => {
   return CLOTHING;
-}
+};
 
 const fetchFonts = () => {
   return Font.loadAsync({
-    'blackjack': require('./assets/fonts/blackjack.otf'),
-    'fira-sans-bold': require('./assets/fonts/FiraSans-Bold.otf'),
-    'fira-sans-bold': require('./assets/fonts/FiraSans-BoldItalic.otf'),
+    blackjack: require("./assets/fonts/blackjack.otf"),
+    "fira-sans-bold": require("./assets/fonts/FiraSans-Bold.otf"),
+    "fira-sans-bold": require("./assets/fonts/FiraSans-BoldItalic.otf")
   });
 };
 
@@ -42,11 +50,9 @@ const fetchFonts = () => {
 let content;
 let headerContent;
 
-
 export default function App() {
-
   // Keeps track of current screen
-  const [currScreen, setCurrScreen] = useState('login');
+  const [currScreen, setCurrScreen] = useState("login");
   const [dataLoaded, setDataLoaded] = useState(false);
   const [clothingImage, setClothingImage] = useState();
   const [images, setImages] = useState([]);
@@ -54,102 +60,104 @@ export default function App() {
   const [isFetching, setIsFetching] = useState(false);
   const [recommendedImage, setRecommendedImage] = useState();
 
-
   // ######################################UPLOADING TO SERVER STUFF#####################################
   // Creates form data from an image
-  const createFormData = (photo) => {
+  const createFormData = photo => {
     const data = new FormData();
 
     data.append("photo", {
-      name: 'file',
-      type: photo.uri.split('.').pop(),
-      uri:
-        photo.uri
+      name: "file",
+      type: photo.uri.split(".").pop(),
+      uri: photo.uri
     });
 
     return data;
   };
 
   // Uploads the photo
-  const handleUploadPhoto = async (photo) => {
+  const handleUploadPhoto = async photo => {
     setIsFetching(true);
-    fetch(`http://localhost:${PORTNUMBER}/app/upload`, {
+    fetch(`http://${SERVERURL}:${PORTNUMBER}/app/upload`, {
       method: "POST",
       body: createFormData({
-        name: 'file',
-        type: photo.uri.split('.').pop(),
-        uri:
-          photo.uri
+        name: "file",
+        type: photo.uri.split(".").pop(),
+        uri: photo.uri
       })
     })
       .then(response => response.json())
       .then(response => {
-        console.log("upload succes", response);
+        console.log("upload success", response);
         alert("Upload success!");
       })
       .catch(error => {
-        console.log("upload error", error);
-        alert("Upload failed!");
+        console.log(error);
+        alert("Whoops! We ran into a problem");
       });
     setIsFetching(false);
   };
 
   // Uploads the username for sign up
-  const handleSignUp = async (entered_username, entered_password) => {
+  const handleSignUp = async (username, password) => {
     setIsFetching(true);
     // Fetches stuff from the database
-    fetch(`http://localhost:${PORTNUMBER}/index/db/enroll`, {
+    fetch(`http://${SERVERURL}:${PORTNUMBER}/db/enroll`, {
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        username: entered_username,
-        password: entered_password
+        username,
+        password
       })
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response)
+        console.log(response);
       })
       .catch(error => {
-        console.log("upload error", error);
-        alert("Upload failed!");
+        console.log(error);
+        alert(error + "\nWhoops! We ran into a problem.");
       });
     setIsFetching(false);
   };
 
   // Uploads the username for log in
-  const handleLogIn = async (entered_username, entered_password) => {
+  const handleLogIn = async (username, password) => {
     setIsFetching(true);
-    const bdy = JSON.stringify({
-      username: entered_username,
-      password: entered_password
-    });
-    console.log(JSON.parse(bdy));
     // Fetches stuff from the database
-    fetch(`http://localhost:${PORTNUMBER}/index/db/login`, {
-      method: "POST",
-      body: bdy
-    })
-      .then((response) => {
-        console.log("YO");
-        console.log(response);
-        return response;
-      })
-      .then(response => {
-        console.log("GOT RESPONSE");
-        console.log(response);
-        console.log(response.JSON());
-        // Check For Invalid Login Here
-        if (true) {
-          setLoginWorked(true)
-        } else {
-          setLoginWorked(false)
+    try {
+      const response = await fetch(
+        `http://${SERVERURL}:${PORTNUMBER}/db/login`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            username,
+            password
+          })
         }
-        // End Check for Valid Login
-      })
-      .catch(error => {
-        console.log("upload error", error);
-        alert("Upload failed!");
-      });
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    // .then(response => {
+    //   console.log(response);
+    //   return response;
+    // })
+    // .then(response => {
+    //   console.log("GOT RESPONSE");
+    //   console.log(response);
+    // })
+    // .catch(error => {
+    //   console.log("upload error", error);
+    //   alert("Upload failed!");
+    // });
     setIsFetching(false);
   };
 
@@ -158,9 +166,9 @@ export default function App() {
     setIsFetching(true);
     // These should be replaced with stuff that gets passed into the function
     const temperature = 45;
-    const type_cloth = 'casual';
+    const type_cloth = "casual";
 
-    fetch(`http://localhost:${PORTNUMBER}/app/recommend`, {
+    fetch(`http://${SERVERURL}:${PORTNUMBER}/app/recommend`, {
       method: "POST",
       body: {
         temp: temperature,
@@ -169,19 +177,16 @@ export default function App() {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response)
+        console.log(response);
       })
       .catch(error => {
-        console.log("upload error", error);
-        alert("Upload failed!");
+        console.log(error);
+        alert("Whoops! Something went wrong on our end.");
       });
 
     setIsFetching(false);
-  }
+  };
   // ######################################END UPLOADING TO SERVER STUFF#####################################
-
-
-
 
   if (!dataLoaded) {
     return (
@@ -193,40 +198,36 @@ export default function App() {
   }
 
   const postLoginInfo = async (username, password) => {
-    console.log(username);
-    console.log(password);
     handleLogIn(username, password);
-  }
+  };
 
   const postSignupInfo = (username, password, confirmPassword) => {
-    console.log(username);
-    console.log(password);
     handleSignUp(username, password);
-  }
+  };
 
   const toHome = () => {
-    setCurrScreen('home');
-  }
+    setCurrScreen("home");
+  };
   const toPickClothing = () => {
-    setCurrScreen('add-clothing');
-  }
+    setCurrScreen("add-clothing");
+  };
   const toConf = () => {
-    setCurrScreen('confirmation');
-  }
+    setCurrScreen("confirmation");
+  };
   const toLogin = () => {
-    setCurrScreen('login');
-  }
+    setCurrScreen("login");
+  };
   const toSignup = () => {
-    setCurrScreen('signup');
-  }
+    setCurrScreen("signup");
+  };
   const toRecommend = () => {
     handleRecommendation();
-    setCurrScreen('recommend');
-  }
+    setCurrScreen("recommend");
+  };
   const toWard = () => {
-    setCurrScreen('wardrobe');
+    setCurrScreen("wardrobe");
     console.log("Cheeks");
-  }
+  };
 
   // Image Handler Function
   async function imageTakenHandler(imagePath) {
@@ -234,7 +235,7 @@ export default function App() {
     setSelectedImage(imagePath);
 
     // Grabs the name of the picture (the filename will be something like 'file/foldera/folderb/img/temp/image23452.jpg', this grabs 'image23452.jpg')
-    const imageName = imagePath.split('/').pop();
+    const imageName = imagePath.split("/").pop();
     const newImagePath = FileSystem.documentDirectory + imageName;
 
     // Tries to move the image into the file system
@@ -246,21 +247,21 @@ export default function App() {
     } catch (err) {
       // If there's a problem, it opens an alert
       Alert.alert(
-        'Error Saving Image',
-        'Big Oof',
+        "Error Saving Image",
+        "Big Oof",
         [
           {
-            text: 'OK',
-            style: 'cancel'
-          },
+            text: "OK",
+            style: "cancel"
+          }
         ],
-        { cancelable: false },
+        { cancelable: false }
       );
       console.log(err);
     }
     setIsFetching(false);
     handleUploadPhoto(imagePath);
-  };
+  }
 
   // Image Handler Function
   async function sendUsername() {
@@ -274,62 +275,61 @@ export default function App() {
     } catch (err) {
       // If there's a problem, it opens an alert
       Alert.alert(
-        'Error Saving Image',
-        'Big Oof',
+        "Error Saving Image",
+        "Big Oof",
         [
           {
-            text: 'OK',
-            style: 'cancel'
-          },
+            text: "OK",
+            style: "cancel"
+          }
         ],
-        { cancelable: false },
+        { cancelable: false }
       );
       console.log(err);
     }
     setIsFetching(false);
-  };
-
+  }
 
   // This logic sets the current screen
-  if (currScreen === 'home') {
+  if (currScreen === "home") {
     content = (
       // eventually pass wardrobe in
-      <HomeScreen toClothing={toPickClothing} toWardrobe={toWard} toRecommend={toRecommend} toLogin={toLogin} toSignUp={toSignup} />
+      <HomeScreen
+        toClothing={toPickClothing}
+        toWardrobe={toWard}
+        toRecommend={toRecommend}
+        toLogin={toLogin}
+        toSignUp={toSignup}
+      />
     );
-  } else if (currScreen === 'add-clothing') {
+  } else if (currScreen === "add-clothing") {
+    content = <AddClothingScreen onImageTaken={imageTakenHandler} />;
+    headerContent = <Header onPress={toHome} />;
+  } else if (currScreen === "confirmation") {
+    content = <ConfirmationScreen onConfirm={toHome} />;
+    headerContent = <Header onPress={toHome} />;
+  } else if (currScreen == "wardrobe") {
+    content = <WardrobeScreen loadWardrobe={getWardrobe} />;
+    headerContent = <Header onPress={toHome} />;
+  } else if (currScreen === "login") {
     content = (
-      <AddClothingScreen onImageTaken={imageTakenHandler} />
+      <LoginScreen
+        postLoginInfo={postLoginInfo}
+        toSignup={toSignup}
+        toHome={toHome}
+      />
     );
     headerContent = <Header onPress={toHome} />;
-  } else if (currScreen === 'confirmation') {
-    content = (
-      <ConfirmationScreen onConfirm={toHome} />
-    );
+  } else if (currScreen === "recommend") {
+    content = <RecommendationScreen />;
     headerContent = <Header onPress={toHome} />;
-  } else if (currScreen == 'wardrobe') {
-    content = (
-      <WardrobeScreen loadWardrobe={getWardrobe} />
-    );
-    headerContent = <Header onPress={toHome} />;
-  } else if (currScreen === 'login') {
-    content = (
-      <LoginScreen postLoginInfo={postLoginInfo} toSignup={toSignup} toHome={toHome} />
-    );
-    headerContent = <Header onPress={toHome} />;
-  } else if (currScreen === 'recommend') {
-    content = (
-      <RecommendationScreen />
-    );
-    headerContent = <Header onPress={toHome} />;
-  } else if (currScreen === 'signup') {
-    content = (
-      <SignupScreen postSignupInfo={postSignupInfo} toHome={toHome} />
-    );
+  } else if (currScreen === "signup") {
+    content = <SignupScreen postSignupInfo={postSignupInfo} toHome={toHome} />;
   }
 
   // Returns App Component
   if (isFetching) {
-    return <ActivityIndicator size='large' color={Colors.primary} />;
+    return <ActivityIndicator size="large" color={Colors.primary} />;
   }
   return (
     <View style={styles.screen}>
@@ -345,8 +345,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
