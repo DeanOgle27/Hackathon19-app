@@ -11,7 +11,6 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import * as FileSystem from "expo-file-system";
 import { LinearGradient } from "expo-linear-gradient";
-
 // Imports constants
 import Colors from "./constants/Colors.js";
 
@@ -61,7 +60,7 @@ export default function App() {
     const data = new FormData();
     data.append("photo", {
       name: "file",
-      type: `.${photo.uri.split(".").pop()}`,
+      type: `${photo.uri.split(".").pop()}`,
       uri: photo.uri
     });
     return data;
@@ -69,36 +68,93 @@ export default function App() {
 
   // Uploads the photo
   const handleUploadPhoto = async photo => {
-    console.log("before");
     setIsFetching(true);
-    console.log("after");
     const data = createFormData({
       name: "file",
       type: photo.uri.split(".").pop(),
       uri: photo.uri
     });
-    console.log(data);
-    console.log(`Uploading photo as ${data._parts}`);
-    fetch(`http://${SERVERURL}:${PORTNUMBER}/app/upload`, {
-      method: "POST",
-      body: {}
-    })
-      .then(response => response.json())
+    const name = data._parts[0][1].name;
+    const type = `.${data._parts[0][1].type}`;
+    const badUri = data._parts[0][1].uri;
+    const options = { encoding: "base64" };
+    FileSystem.readAsStringAsync(badUri, options)
       .then(response => {
-        console.log("upload success", response);
-        alert("Upload success!");
+        const uri = `data:image/${data._parts[0][1].type};base64,${response}`;
+        fetch(`http://${SERVERURL}:${PORTNUMBER}/app/upload`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name,
+            type,
+            uri
+          })
+        })
+          .then(response => response.json())
+          .then(response => {
+            console.log("upload success", response);
+          })
+          .catch(error => {
+            console.log(error);
+            alert("Whoops! We ran into a problem");
+          });
       })
       .catch(error => {
         console.log(error);
-        alert("Whoops! We ran into a problem");
       });
-    setIsFetching(false);
   };
+
+  //   try {
+  //     const uri = `data:image/${data._parts[0][1].type};base64,${newUri}`;
+  //
+  //     console.log(
+  //       JSON.stringify({
+  //         name,
+  //         type,
+  //         uri
+  //       })
+  //     );
+  //     fetch(`http://${SERVERURL}:${PORTNUMBER}/app/upload`, {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json"
+  //       },
+  //       body: JSON.stringify({
+  //         name,
+  //         type,
+  //         uri
+  //       })
+  //     })
+  //       .then(response => response.json())
+  //       .then(response => {
+  //         console.log("upload success", response);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //         alert("Whoops! We ran into a problem");
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setIsFetching(false);
+  //
+  //   console.log(error);
+  // };
 
   // Uploads the username for sign up
   const handleSignUp = async (username, password) => {
     setIsFetching(true);
     // Fetches stuff from the database
+    console.log(
+      JSON.stringify({
+        username,
+        password
+      })
+    );
     fetch(`http://${SERVERURL}:${PORTNUMBER}/db/enroll`, {
       method: "POST",
       headers: {

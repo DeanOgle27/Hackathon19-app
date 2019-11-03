@@ -40,7 +40,7 @@ const ImgPicker = props => {
       return;
     }
     const image = await ImagePicker.launchCameraAsync({
-      quality: 1
+      quality: 0.2
     });
 
     setPickedImage(image.uri);
